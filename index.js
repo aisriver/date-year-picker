@@ -241,11 +241,14 @@
                     var aTd = document.createElement('a');
                     aTd.innerHTML = yearArr[i * 3 + n];
                     aTd.className = 'yearA';
+                    if (aTd.innerHTML === nowYear) {
+                        aTd.className = 'yearA yearSelect';
+                    }
                     aTd.addEventListener('click', function (a) {
                         Array.from(document.getElementsByClassName('yearA')).forEach(function (b) {
                             b.className = 'yearA';
                         });
-                        this.className = this.className === 'yearA yearSelect' ? 'yearA' : 'yearA yearSelect';
+                        this.className = 'yearA yearSelect';
                         element.value = this.innerHTML;
                     });
                     tdDom.appendChild(aTd);
