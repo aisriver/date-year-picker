@@ -78,6 +78,31 @@
         '.pickerModel > .pickerBody {' +
         '   flex: 1 1;' +
         '}'
+        +
+        '.pickerModel > .pickerBody > table {' +
+        '   width: 100%;' +
+        '}'
+        +
+        '.pickerModel > .pickerBody > table > tr > td {' +
+        '   text-align: center;' +
+        '   line-height: 40px;' +
+        '}'
+        +
+        '.yearA {' +
+        '   margin-top: 8px;' +
+        '   display: inline-block;' +
+        '   cursor: pointer;' +
+        '   text-align: center;' +
+        '   height: 24px;' +
+        '   line-height: 24px;' +
+        '   padding: 0 8px;' +
+        '   border-radius: 2px;' +
+        '}'
+        +
+        '.yearSelect {' +
+        '   background: #22aac1;' +
+        '   color: #fff;' +
+        '}'
         ;
     document.head.appendChild(style);
     var yearPicker = Object.create(HTMLElement.prototype, {
@@ -162,6 +187,7 @@
     function addPickerDom(element, inputDom) {
         var nowYear = inputDom.value;
         var pickerDom = document.createElement('div');
+        var yearArr = [];
         pickerDom.className = element.pickerClass || '';
         if (!/pickerModel/.test(pickerDom.className) && pickerDom.className) {
             pickerDom.className = pickerDom.className + ' pickerModel';
@@ -175,12 +201,19 @@
         leftButton.setAttribute('role', 'button');
         leftButton.title = '上一年代';
         leftButton.className = 'leftButton btn';
+        leftButton.addEventListener('click', function (e) {
+            renderTable(yearArr[0] - 10);
+        });
 
         var rightButton = document.createElement('a');
         rightButton.innerHTML = '>';
         rightButton.setAttribute('role', 'button');
         rightButton.title = '下一年代';
         rightButton.className = 'rightButton btn';
+        rightButton.addEventListener('click', function (e) {
+            renderTable(yearArr[0] + 10);
+        });
+
         var showRange = document.createElement('span');
         showRange.innerHTML = "2010-2019";
         showRange.className = 'showRange';
@@ -193,23 +226,35 @@
         pickerBody.className = 'pickerBody';
         var yearPanelTable = document.createElement('table');
         var startNum = Number(nowYear) - Number(nowYear.substring(nowYear.length - 1, nowYear.length)) - 1;
-        var yearArr = [];
-        for (var i = 0; i < 12; i++) {
-            yearArr.push(startNum + i);
-        }
-        for (var i = 0; i < 4; i++) {
-            var trDom = document.createElement('tr');
-            for (var n = 0; n < 3; n++) {
-                var tdDom = document.createElement('td');
-                var aTd = document.createElement('a');
-                aTd.innerHTML = yearArr[i * 3 + n];
-                aTd.className = 'yearChoose';
-                tdDom.appendChild(aTd);
-                trDom.appendChild(tdDom);
+        renderTable(startNum)
+        function renderTable(startNum) {
+            pickerBody.innerHTML = '';
+            yearPanelTable.innerHTML = '';
+            yearArr = [];
+            for (var i = 0; i < 12; i++) {
+                yearArr.push(startNum + i);
             }
-            yearPanelTable.appendChild(trDom);
+            for (var i = 0; i < 4; i++) {
+                var trDom = document.createElement('tr');
+                for (var n = 0; n < 3; n++) {
+                    var tdDom = document.createElement('td');
+                    var aTd = document.createElement('a');
+                    aTd.innerHTML = yearArr[i * 3 + n];
+                    aTd.className = 'yearA';
+                    aTd.addEventListener('click', function (a) {
+                        Array.from(document.getElementsByClassName('yearA')).forEach(function (b) {
+                            b.className = 'yearA';
+                        });
+                        this.className = this.className === 'yearA yearSelect' ? 'yearA' : 'yearA yearSelect';
+                        element.value = this.innerHTML;
+                    });
+                    tdDom.appendChild(aTd);
+                    trDom.appendChild(tdDom);
+                }
+                yearPanelTable.appendChild(trDom);
+            }
+            pickerBody.appendChild(yearPanelTable);
         }
-        pickerBody.appendChild(yearPanelTable);
 
         pickerDom.innerHTML = '';
         pickerDom.appendChild(pickerHeader);
