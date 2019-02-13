@@ -1,0 +1,25 @@
+{
+  "name": "year-picker",
+  "version": "1.0.3",
+  "description": "不同角度创造自定义元素",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aisriver/year-picker.git"
+  },
+  "keywords": [
+    "year",
+    "picker",
+    "date",
+    "react"
+  ],
+  "author": "Jared",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aisriver/year-picker/issues"
+  },
+  "homepage": "https://github.com/aisriver/year-picker#readme"
+}
