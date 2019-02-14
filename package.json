@@ -1,7 +1,7 @@
 {
   "name": "date-year-picker",
   "version": "1.0.0",
-  "description": "不同角度创造自定义元素",
+  "description": "年代选择器",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
