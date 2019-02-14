@@ -378,21 +378,19 @@
         }, 0);
         props = props || {};
         if (props.createElement) {
-            var obj = { className: 'date-year-picker' };
+            var obj = { };
             for (var key in props) {
                 if (key !== 'createElement') {
                     obj[key] = props[key];
                     if (typeof obj[key] === 'object') {
                         obj[key] = JSON.stringify(obj[key]);
                     }
-                    if (key === 'className' && props.className) {
-                        obj.className = obj.className + ' ' + props.className;
-                    }
+                    // if (key === 'className' && props.className) {
+                    //     obj.className = obj.className + ' ' + props.className;
+                    // }
                 }
             }
-            return props.createElement('span', obj, [
-                props.createElement('date-year-picker', obj)
-            ]);
+            return props.createElement('span', obj);
         } else {
             console.error("Can't find createElement.")
             return '';
