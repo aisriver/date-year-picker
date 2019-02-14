@@ -1,14 +1,14 @@
-# year-picker
+# date-year-picker
 年代选择器
 
 # how to use
 ## step 1
 - npm install -g cnpm --registry=https://registry.npm.taobao.org
-- cnpm install year-picker --save
-- 或者使用 yarn add year-picker
+- cnpm install date-year-picker --save
+- 或者使用 yarn add date-year-picker
 
 ## step 2
-import YearPicker from 'year-picker';
+import DateYearPicker from 'date-year-picker';
 
 使用日期选择器的时候，突然发现年选择器比较少，
 工作中恰好有这样的需求，所以就使用存原生封装了一个
@@ -16,7 +16,7 @@ import YearPicker from 'year-picker';
 - use in react
 
 <pre>
-    &ltYearPicker
+    &ltDateYearPicker
         createElement={React.createElement}
         placeholder="请选择所属财年"
     /&gt
@@ -30,12 +30,12 @@ import YearPicker from 'year-picker';
 - use in 其他框架
 
 <pre>
-    &ltyear-picker
+    &ltdate-year-picker
         placeholder="请选择所属财年"
     &gt
-    &lt/year-picker&gt
+    &lt/date-year-picker&gt
 
-    在引人组件的时候同时创建了自定义元素 year-picker 直接在html传入对应属性即可
+    在引人组件的时候同时创建了自定义元素 date-year-picker 直接在html传入对应属性即可
 
 </pre>
 
@@ -43,4 +43,4 @@ import YearPicker from 'year-picker';
 WeChat：mrliaojun
 
 ### github
-[Jared](https://github.com/aisriver/year-picker.git)
+[Jared](https://github.com/aisriver/date-year-picker.git)

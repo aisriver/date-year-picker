@@ -113,7 +113,7 @@
         '}'
         ;
     document.head.appendChild(style);
-    var yearPicker = Object.create(HTMLElement.prototype, {
+    var dateYearPicker = Object.create(HTMLElement.prototype, {
         /* 元素生命周期的事件 */
         // 实例化时触发
         createdCallback: {
@@ -137,7 +137,7 @@
         attributeChangedCallback: {
             value: function (attrName, oldVal, newVal) {
                 // console.log('attributeChangedCallback-change' + attrName + 'from' + oldVal + 'to' + newVal);
-                customTag('year-picker', myElementHandler);
+                customTag('date-year-picker', myElementHandler);
             },
         },
         /* 定义元素的公有方法和属性 */
@@ -148,7 +148,7 @@
         },
     });
 
-    document.registerElement('year-picker', { prototype: yearPicker });
+    document.registerElement('date-year-picker', { prototype: dateYearPicker });
 
     function customTag(tagName, fn) {
         Array
@@ -333,11 +333,11 @@
         return pickerDom;
     }
 
-    customTag('year-picker', myElementHandler);
+    customTag('date-year-picker', myElementHandler);
 
-    var YearPicker = function (props) {
+    var DateYearPicker = function (props) {
         setTimeout(function () {
-            customTag('year-picker', myElementHandler);
+            customTag('date-year-picker', myElementHandler);
         }, 0);
         props = props || {};
         if (props.createElement) {
@@ -350,7 +350,7 @@
                     }
                 }
             }
-            return props.createElement('year-picker', obj);
+            return props.createElement('date-year-picker', obj);
         } else {
             console.error("Can't find createElement.")
             return '';
@@ -359,10 +359,10 @@
 
     _global = (function () { return this || (0, eval)('this'); }());
     if (typeof module !== "undefined" && module.exports) {
-        module.exports = YearPicker;
+        module.exports = DateYearPicker;
     } else if (typeof define === "function" && define.amd) {
-        define(function () { return YearPicker; });
+        define(function () { return DateYearPicker; });
     } else {
-        !('YearPicker' in _global) && (_global.YearPicker = YearPicker);
+        !('DateYearPicker' in _global) && (_global.DateYearPicker = DateYearPicker);
     }
 }());
