@@ -223,20 +223,24 @@
     }
 
     function onChange(e, element) {
-        if (element.onChange) {
-            element.onChange(e, element);
-        }
-        if (element.onchange) {
-            element.onchange(e, element);
-        }
-        if (/date-year-picker/.test(element.parentElement.className)) {
-            element.parentElement.value = element;
-            if (element.parentElement.onChange) {
-                element.parentElement.onChange(e, element);
+        try {
+            if (/date-year-picker/.test(element.parentElement.className)) {
+                element.parentElement.value = element;
+                if (element.parentElement.onChange) {
+                    element.parentElement.onChange(e, element);
+                }
+                if (element.parentElement.onchange) {
+                    element.parentElement.onchange(e, element);
+                }
             }
-            if (element.parentElement.onchange) {
-                element.parentElement.onchange(e, element);
+            if (element.onChange) {
+                element.onChange(e, element);
             }
+            if (element.onchange) {
+                element.onchange(e, element);
+            }
+        } catch (error) {
+            console.warn(error);
         }
     }
 
