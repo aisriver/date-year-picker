@@ -390,7 +390,7 @@
                     // }
                 }
             }
-            return props.createElement('span', obj);
+            return props.createElement('date-year-picker', obj);
         } else {
             console.error("Can't find createElement.")
             return '';
