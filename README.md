@@ -24,6 +24,25 @@ import DateYearPicker from 'date-year-picker';
     react 通过jsx创建自定义组件并导出html模版，为了借用它这种工作模式，
     需要把React.createElement方法传入进来  否则返回空内容
 
+    <h3>⚠️ 注意</h3>
+    如果在react表单验证中使用，控制台有可能会抛出以下异常：
+    <span style="color: red;">“Function components cannot be given refs. 
+    Attempts to access this ref will fail.”</span>
+    原因是不能为函数组件提供引用，虽然不影响使用，
+    但是看起来让人很不舒服
+    这时候你需要将它转化一下，如下：
+
+    class SetDateYearPicker extends React.Component {
+        render() {
+            return &ltDateYearPicker {...this.props} /&gt
+        }
+    }
+    然后在getFieldDecorator下便可正常使用
+    &ltSetDateYearPicker
+        createElement={React.createElement}
+        placeholder="请选择所属财年"
+    /&gt
+
     react 同时适用下面这种方法
 </pre>
 
