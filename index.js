@@ -174,12 +174,32 @@
         return tmp;
     }
 
-    function getOffsetTop(obj) {
+    function getScrollTop(obj) {
         var tmp = obj.offsetTop;
         var val = obj.offsetParent;
         while (val != null) {
             tmp += val.offsetTop;
             val = val.offsetParent;
+        }
+        return tmp;
+    }
+
+    function getOffsetLeft(obj) {
+        var tmp = obj.scrollLeft;
+        var val = obj.parentElement;
+        while (val != null) {
+            tmp += val.scrollLeft;
+            val = val.parentElement;
+        }
+        return tmp;
+    }
+
+    function getScrollTop(obj) {
+        var tmp = obj.scrollTop;
+        var val = obj.parentElement;
+        while (val != null) {
+            tmp += val.scrollTop;
+            val = val.parentElement;
         }
         return tmp;
     }
@@ -230,8 +250,8 @@
         document.body.appendChild(pickerDom);
         inputDom.addEventListener('focus', function (e) {
             pickerDom.style.display = '';
-            pickerDom.style.left = getOffsetLeft(e.target) + 'px';
-            pickerDom.style.top = getOffsetTop(e.target) + 'px';
+            pickerDom.style.left = (getOffsetLeft(e.target) - getOffsetLeft(e.target)) + 'px';
+            pickerDom.style.top = (getOffsetTop(e.target) - getScrollTop(e.target)) + 'px';
         });
         document.addEventListener('click', function (e) {
             // 如果e.target不是pickerDom的children 且不是element的children
