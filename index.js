@@ -115,6 +115,23 @@
         '   background: #22aac1;' +
         '   color: #fff;' +
         '}'
+        +
+        '.yearSelect {' +
+        '   background: #22aac1;' +
+        '   color: #fff;' +
+        '}'
+        +
+        '.yearPicker > input::-webkit-input-placeholder {' +
+        '   color: #c0c0c0;' +
+        '}'
+        +
+        '.yearPicker > input::-moz-placeholder  {' +
+        '   color: #c0c0c0;' +
+        '}'
+        +
+        '.yearPicker > input::-ms-input-placeholder {' +
+        '   color: #c0c0c0;' +
+        '}'
         ;
     document.head.appendChild(style);
     var dateYearPicker = Object.create(HTMLElement.prototype, {
@@ -378,7 +395,7 @@
         }, 0);
         props = props || {};
         if (props.createElement) {
-            var obj = { };
+            var obj = {};
             for (var key in props) {
                 if (key !== 'createElement') {
                     obj[key] = props[key];
@@ -388,8 +405,12 @@
                     // if (key === 'className' && props.className) {
                     //     obj.className = obj.className + ' ' + props.className;
                     // }
+                    if (key === 'onChange') {
+                        onChange = props.onChange;
+                    }
                 }
             }
+            console.log('[date-year-picker]props', props);
             return props.createElement('date-year-picker', obj);
         } else {
             console.error("Can't find createElement.")
