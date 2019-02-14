@@ -1,5 +1,5 @@
-# progresspie
-从不同角度创造自定义元素.
+# year-picker
+年代选择器
 
 # how to use
 ## step 1
@@ -10,19 +10,19 @@
 ## step 2
 import YearPicker from 'year-picker';
 
+使用日期选择器的时候，突然发现年选择器比较少，
+工作中恰好有这样的需求，所以就使用存原生封装了一个
+
 - use in react
 
 <pre>
     &ltYearPicker
         createElement={React.createElement}
-        width="150px"
-        height="150px"
-        percent="45"
-        backColor="#655"
-        percentColor="yellowgreen"
+        placeholder="请选择所属财年"
     /&gt
 
-    react 通过jsx创建自定义组件并导出html模版，为了借用它这种工作模式，需要把React.createElement方法传入进来  否则返回空内容
+    react 通过jsx创建自定义组件并导出html模版，为了借用它这种工作模式，
+    需要把React.createElement方法传入进来  否则返回空内容
 
     react 同时适用下面这种方法
 </pre>
@@ -31,11 +31,7 @@ import YearPicker from 'year-picker';
 
 <pre>
     &ltyear-picker
-        width="150px"
-        height="150px"
-        percent="45"
-        backColor="#655"
-        percentColor="yellowgreen"
+        placeholder="请选择所属财年"
     &gt
     &lt/year-picker&gt
 

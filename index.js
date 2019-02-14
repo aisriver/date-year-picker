@@ -29,7 +29,7 @@
         '}'
         +
         '.pickerModel {' +
-        '   position: relative;' +
+        '   position: absolute;' +
         '   outline: none;' +
         '   width: 280px;' +
         '   border: 1px solid #fff;' +
@@ -63,8 +63,16 @@
         '   left: 7px;' +
         '}'
         +
+        '.pickerModel > .pickerHeader > .leftButton:after {' +
+        '   content: "\\AB";' +
+        '}'
+        +
         '.pickerModel > .pickerHeader > .rightButton {' +
         '   right: 7px;' +
+        '}'
+        +
+        '.pickerModel > .pickerHeader > .rightButton:after {' +
+        '   content: "\\BB";' +
         '}'
         +
         '.pickerModel > .pickerHeader > .showRange {' +
@@ -156,9 +164,52 @@
         return b;
     }
 
+    function getOffsetLeft(obj) {
+        var tmp = obj.offsetLeft;
+        var val = obj.offsetParent;
+        while (val != null) {
+            tmp += val.offsetLeft;
+            val = val.offsetParent;
+        }
+        return tmp;
+    }
+
+    function getOffsetTop(obj) {
+        var tmp = obj.offsetTop;
+        var val = obj.offsetParent;
+        while (val != null) {
+            tmp += val.offsetTop;
+            val = val.offsetParent;
+        }
+        return tmp;
+    }
+
+    function isChildOf(child, parent) {
+        var parentNode;
+        if (child && parent) {
+            parentNode = child.parentNode;
+            while (parentNode) {
+                if (parent === parentNode) {
+                    return true;
+                }
+                parentNode = parentNode.parentNode;
+            }
+        }
+        return false;
+    }
+
+    function onChange(e, element) {
+        if (element.onChange) {
+            element.onChange(e, element);
+        }
+        if (element.onchange) {
+            element.onchange(e, element);
+        }
+    }
+
     function myElementHandler(element) {
         var value = tryToParse(element.value) || '';
-        var defaultValue = tryToParse(element.defaultValue) || '2019';
+        var defaultValue = tryToParse(element.defaultValue) || new Date().getFullYear();
         var className = element.class || '';
         className = element.className || className;
         if (!/yearPicker/.test(className) && className) {
@@ -167,25 +218,42 @@
             className = 'yearPicker';
         }
         element.className = className;
-        console.log('element', element);
 
         var inputDom = document.createElement('input');
         inputDom.placeholder = element.getAttribute('placeholder');
-        inputDom.value = value || defaultValue;
+        inputDom.defaultValue = value || defaultValue;
+        inputDom.value = value;
         var pickerDom = addPickerDom(element, inputDom);
         Array.from(document.getElementsByClassName('pickerModel')).forEach(function (a) {
             document.body.removeChild(a);
         });
         document.body.appendChild(pickerDom);
-        inputDom.addEventListener('focus', function () {
+        inputDom.addEventListener('focus', function (e) {
             pickerDom.style.display = '';
+            pickerDom.style.left = getOffsetLeft(e.target) + 'px';
+            pickerDom.style.top = getOffsetTop(e.target) + 'px';
         });
+        document.addEventListener('click', function (e) {
+            // 如果e.target不是pickerDom的children 且不是element的children
+            if (
+                e.target !== element
+                && e.target !== pickerDom
+                && !isChildOf(e.target, pickerDom)
+                && !isChildOf(e.target, element)
+                && (pickerDom.style.display !== 'none')
+            ) {
+                pickerDom.style.display = 'none';
+            }
+        });
+        inputDom.onchange = function (e) {
+            onChange(e.target.value, element);
+        };
         element.innerHTML = '';
         element.appendChild(inputDom);
     }
 
     function addPickerDom(element, inputDom) {
-        var nowYear = inputDom.value;
+        var nowYear = inputDom.value || JSON.stringify(new Date().getFullYear());
         var pickerDom = document.createElement('div');
         var yearArr = [];
         pickerDom.className = element.pickerClass || '';
@@ -197,7 +265,6 @@
         var pickerHeader = document.createElement('div');
         pickerHeader.className = 'pickerHeader';
         var leftButton = document.createElement('a');
-        leftButton.innerHTML = '<';
         leftButton.setAttribute('role', 'button');
         leftButton.title = '上一年代';
         leftButton.className = 'leftButton btn';
@@ -206,7 +273,6 @@
         });
 
         var rightButton = document.createElement('a');
-        rightButton.innerHTML = '>';
         rightButton.setAttribute('role', 'button');
         rightButton.title = '下一年代';
         rightButton.className = 'rightButton btn';
@@ -215,7 +281,6 @@
         });
 
         var showRange = document.createElement('span');
-        showRange.innerHTML = "2010-2019";
         showRange.className = 'showRange';
         pickerHeader.innerHTML = '';
         pickerHeader.appendChild(leftButton);
@@ -234,6 +299,7 @@
             for (var i = 0; i < 12; i++) {
                 yearArr.push(startNum + i);
             }
+            showRange.innerHTML = yearArr[0] + ' - ' + yearArr[yearArr.length - 1];
             for (var i = 0; i < 4; i++) {
                 var trDom = document.createElement('tr');
                 for (var n = 0; n < 3; n++) {
@@ -250,6 +316,7 @@
                         });
                         this.className = 'yearA yearSelect';
                         element.value = this.innerHTML;
+                        onChange(this.innerHTML, element);
                     });
                     tdDom.appendChild(aTd);
                     trDom.appendChild(tdDom);

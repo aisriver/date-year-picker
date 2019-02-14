@@ -1,6 +1,6 @@
 {
   "name": "year-picker",
-  "version": "1.0.3",
+  "version": "1.0.0",
   "description": "不同角度创造自定义元素",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,8 @@
     "year",
     "picker",
     "date",
-    "react"
+    "react",
+    "js"
   ],
   "author": "Jared",
   "license": "ISC",
