@@ -174,7 +174,7 @@
         return tmp;
     }
 
-    function getScrollTop(obj) {
+    function getOffsetTop(obj) {
         var tmp = obj.offsetTop;
         var val = obj.offsetParent;
         while (val != null) {
@@ -184,7 +184,7 @@
         return tmp;
     }
 
-    function getOffsetLeft(obj) {
+    function getScrollLeft(obj) {
         var tmp = obj.scrollLeft;
         var val = obj.parentElement;
         while (val != null) {
@@ -250,7 +250,7 @@
         document.body.appendChild(pickerDom);
         inputDom.addEventListener('focus', function (e) {
             pickerDom.style.display = '';
-            pickerDom.style.left = (getOffsetLeft(e.target) - getOffsetLeft(e.target)) + 'px';
+            pickerDom.style.left = (getOffsetLeft(e.target) - getScrollLeft(e.target)) + 'px';
             pickerDom.style.top = (getOffsetTop(e.target) - getScrollTop(e.target)) + 'px';
         });
         document.addEventListener('click', function (e) {
