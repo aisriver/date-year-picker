@@ -19,6 +19,10 @@
         '   border-radius: 4px;' +
         '}'
         +
+        '.date-year-picker {' +
+        '   display: inline-block;' +
+        '}'
+        +
         '.yearPicker > input:hover {' +
         '   border: 1px solid #00adc4;' +
         '}'
@@ -225,6 +229,15 @@
         if (element.onchange) {
             element.onchange(e, element);
         }
+        if (/date-year-picker/.test(element.parentElement.className)) {
+            element.parentElement.value = element;
+            if (element.parentElement.onChange) {
+                element.parentElement.onChange(e, element);
+            }
+            if (element.parentElement.onchange) {
+                element.parentElement.onchange(e, element);
+            }
+        }
     }
 
     function myElementHandler(element) {
@@ -361,16 +374,21 @@
         }, 0);
         props = props || {};
         if (props.createElement) {
-            var obj = {};
+            var obj = { className: 'date-year-picker' };
             for (var key in props) {
                 if (key !== 'createElement') {
                     obj[key] = props[key];
                     if (typeof obj[key] === 'object') {
                         obj[key] = JSON.stringify(obj[key]);
                     }
+                    if (key === 'className' && props.className) {
+                        obj.className = obj.className + ' ' + props.className;
+                    }
                 }
             }
-            return props.createElement('date-year-picker', obj);
+            return props.createElement('span', obj, [
+                props.createElement('date-year-picker', obj)
+            ]);
         } else {
             console.error("Can't find createElement.")
             return '';
