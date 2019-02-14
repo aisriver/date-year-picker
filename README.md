@@ -11,7 +11,7 @@
 import DateYearPicker from 'date-year-picker';
 
 使用日期选择器的时候，突然发现年选择器比较少，
-工作中恰好有这样的需求，所以就使用存原生封装了一个
+工作中恰好有这样的需求，所以就使用原生封装了一个
 
 - use in react
 
