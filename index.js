@@ -4,6 +4,22 @@
     var style = document.createElement('style');
     style.type = 'text/css';
     style.innerHTML =
+        '.yearPicker {' +
+        '   font-size: 14px;' +
+        '   width: 100%;' +
+        '   font-variant: tabular-nums;' +
+        '   line-height: 1.5;' +
+        '   color: rgba(0, 0, 0, 0.65);' +
+        '   box-sizing: border-box;' +
+        '   margin: 0;' +
+        '   padding: 0;' +
+        '   list-style: none;' +
+        '   position: relative;' +
+        '   display: inline-block;' +
+        '   outline: none;' +
+        '   transition: opacity 0.3s;' +
+        '}'
+        +
         '.yearPicker > input {' +
         '   position: relative;' +
         '   display: inline-block;' +
@@ -132,44 +148,75 @@
         '.yearPicker > input::-ms-input-placeholder {' +
         '   color: #c0c0c0;' +
         '}'
+        +
+        '.pickerIcon {' +
+        '   z-index: 1;' +
+        '}'
+        +
+        '.pickerIcon , .pickerClear {' +
+        '   font-size: 14px;' +
+        '   color: rgba(0, 0, 0, 0.25);' +
+        '   display: inline-block;' +
+        '   line-height: 1;' +
+        '   position: absolute;' +
+        '   width: 14px;' +
+        '   height: 14px;' +
+        '   right: 12px;' +
+        '   top: 50%;' +
+        '   margin-top: -7px;' +
+        '   user-select: none;' +
+        '}'
+        +
+        '.pickerClear {' +
+        '   z-index: 2;' +
+        '   opacity: 0;' +
+        '   background: #fff;' +
+        '   cursor: pointer;' +
+        '}'
+        +
+        '.yearPicker:hover > .pickerClear {' +
+        '   opacity: 1;' +
+        '}'
         ;
     document.head.appendChild(style);
-    var dateYearPicker = Object.create(HTMLElement.prototype, {
+
+    class YearPicker extends HTMLElement {
+
+        constructor() {
+            super();
+        }
+
+        static get observedAttributes() { return ['value']; }
+
         /* 元素生命周期的事件 */
         // 实例化时触发
-        createdCallback: {
-            value: function () {
-                // console.log('invoked createCallback!');
-            },
-        },
+        createdCallback() {
+            // console.log('invoked createCallback!');
+        }
         // 元素添加到DOM树时触发
-        attachedCallback: {
-            value: function () {
-                // console.log('invoked attachedCallback!');
-            },
-        },
+        attachedCallback() {
+            // console.log('invoked attachedCallback!');
+        }
         // 元素DOM树上移除时触发
-        detachedCallback: {
-            value: function () {
-                // console.log('invoked detachedCallback!');
-            },
-        },
+        detachedCallback() {
+            // console.log('invoked detachedCallback!');
+        }
         // 元素的attribute发生变化时触发
-        attributeChangedCallback: {
-            value: function (attrName, oldVal, newVal) {
-                // console.log('attributeChangedCallback-change' + attrName + 'from' + oldVal + 'to' + newVal);
-                customTag('date-year-picker', myElementHandler);
-            },
-        },
-        /* 定义元素的公有方法和属性 */
-        // 重写  属性
-        value: {
-            get: function () { return this.getAttribute('value'); },
-            set: function (val) { this.setAttribute('value', val); },
-        },
-    });
+        attributeChangedCallback(attrName, oldVal, newVal) {
+            // console.log('attributeChangedCallback-change' + attrName + 'from' + oldVal + 'to' + newVal);
+            customTag('date-year-picker', myElementHandler);
+        }
 
-    document.registerElement('date-year-picker', { prototype: dateYearPicker });
+        get value() {
+            return this.getAttribute('value');
+        }
+
+        set value(val) {
+            this.setAttribute('value', val);
+        }
+    }
+
+    window.customElements.define('date-year-picker', YearPicker);
 
     function customTag(tagName, fn) {
         Array
@@ -261,6 +308,9 @@
         }
     }
 
+    var defaultPath = 'M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z';
+    var clearPath = 'M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm165.4 618.2l-66-.3L512 563.4l-99.3 118.4-66.1.3c-4.4 0-8-3.5-8-8 0-1.9.7-3.7 1.9-5.2l130.1-155L340.5 359a8.32 8.32 0 0 1-1.9-5.2c0-4.4 3.6-8 8-8l66.1.3L512 464.6l99.3-118.4 66-.3c4.4 0 8 3.5 8 8 0 1.9-.7 3.7-1.9 5.2L553.5 514l130 155c1.2 1.5 1.9 3.3 1.9 5.2 0 4.4-3.6 8-8 8z';
+
     function myElementHandler(element) {
         var value = tryToParse(element.value) || '';
         var defaultValue = tryToParse(element.defaultValue) || new Date().getFullYear();
@@ -302,8 +352,29 @@
         inputDom.onchange = function (e) {
             onChange(e.target.value, element);
         };
+
+        var pickerIcon = createIcon('pickerIcon', defaultPath);
         element.innerHTML = '';
         element.appendChild(inputDom);
+        element.appendChild(pickerIcon);
+        if (value) {
+            var pickerClear = createIcon('pickerClear', clearPath);
+            pickerClear.addEventListener('click', function (e){
+                element.value = '';
+                onChange('', element);
+            });
+            element.appendChild(pickerClear);
+        }
+    }
+
+    function createIcon(className, path) {
+        var icon = document.createElement('i');
+        icon.className = className;
+        icon.innerHTML = '<svg viewBox="64 64 896 896" width="1em" height="1em" aria-hidden="true" fill="currentColor">' +
+            '<path d="' + path + '">' +
+            '</path>' +
+            '</svg>';
+        return icon;
     }
 
     function addPickerDom(element, inputDom) {
