@@ -49,6 +49,7 @@
         '}'
         +
         '.pickerModel {' +
+        '   z-index: 99;' +
         '   position: absolute;' +
         '   outline: none;' +
         '   width: 280px;' +
