@@ -328,6 +328,7 @@
         inputDom.placeholder = element.getAttribute('placeholder');
         inputDom.defaultValue = value || defaultValue;
         inputDom.value = value;
+        inputDom.type = 'number';
         var pickerDom = addPickerDom(element, inputDom);
         Array.from(document.getElementsByClassName('pickerModel')).forEach(function (a) {
             document.body.removeChild(a);
