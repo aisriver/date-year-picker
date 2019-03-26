@@ -181,43 +181,81 @@
         ;
     document.head.appendChild(style);
 
-    class YearPicker extends HTMLElement {
+    // class YearPicker extends HTMLElement {
 
-        constructor() {
-            super();
-        }
+    //     constructor() {
+    //         super();
+    //     }
 
-        static get observedAttributes() { return ['value']; }
+    //     static get observedAttributes() { return ['value']; }
 
+    //     /* 元素生命周期的事件 */
+    //     // 实例化时触发
+    //     createdCallback() {
+    //         // console.log('invoked createCallback!');
+    //     }
+    //     // 元素添加到DOM树时触发
+    //     attachedCallback() {
+    //         // console.log('invoked attachedCallback!');
+    //     }
+    //     // 元素DOM树上移除时触发
+    //     detachedCallback() {
+    //         // console.log('invoked detachedCallback!');
+    //     }
+    //     // 元素的attribute发生变化时触发
+    //     attributeChangedCallback(attrName, oldVal, newVal) {
+    //         // console.log('attributeChangedCallback-change' + attrName + 'from' + oldVal + 'to' + newVal);
+    //         customTag('date-year-picker', myElementHandler);
+    //     }
+
+    //     get value() {
+    //         return this.getAttribute('value');
+    //     }
+
+    //     set value(val) {
+    //         this.setAttribute('value', val);
+    //     }
+    // }
+
+    // window.customElements.define('date-year-picker', YearPicker);
+
+    var YearPicker = Object.create(HTMLElement.prototype, {
         /* 元素生命周期的事件 */
         // 实例化时触发
-        createdCallback() {
-            // console.log('invoked createCallback!');
-        }
+        createdCallback: {
+            value: function () {
+                // console.log('invoked createCallback!');
+            },
+        },
         // 元素添加到DOM树时触发
-        attachedCallback() {
-            // console.log('invoked attachedCallback!');
-        }
+        attachedCallback: {
+            value: function () {
+                // console.log('invoked attachedCallback!');
+            },
+        },
         // 元素DOM树上移除时触发
-        detachedCallback() {
-            // console.log('invoked detachedCallback!');
-        }
+        detachedCallback: {
+            value: function () {
+                // console.log('invoked detachedCallback!');
+            },
+        },
         // 元素的attribute发生变化时触发
-        attributeChangedCallback(attrName, oldVal, newVal) {
-            // console.log('attributeChangedCallback-change' + attrName + 'from' + oldVal + 'to' + newVal);
-            customTag('date-year-picker', myElementHandler);
-        }
+        attributeChangedCallback: {
+            value: function (attrName, oldVal, newVal) {
+                // console.log('attributeChangedCallback-change' + attrName + 'from' + oldVal + 'to' + newVal);
+                customTag('date-year-picker', myElementHandler);
+            },
+        },
+        /* 定义元素的公有方法和属性 */
+        // 重写  属性
+        value: {
+            get: function () { return this.getAttribute('value'); },
+            set: function (val) { this.setAttribute('value', val); },
+        },
 
-        get value() {
-            return this.getAttribute('value');
-        }
+    });
 
-        set value(val) {
-            this.setAttribute('value', val);
-        }
-    }
-
-    window.customElements.define('date-year-picker', YearPicker);
+    document.registerElement('date-year-picker', { prototype: YearPicker });
 
     function customTag(tagName, fn) {
         Array
